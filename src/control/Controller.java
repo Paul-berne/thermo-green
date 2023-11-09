@@ -1,16 +1,18 @@
 /**
- * @author J�r�me Valenti 
+ * @author Paul Berne
  */
 package control;
 
 
+
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
 
 import javax.swing.SwingUtilities;
 
+
 import model.*;
-import tools.BCrypt;
 import DAO.*;
 import view.*;
 
@@ -24,7 +26,7 @@ import view.*;
  * </li>
  * </ol>
  * 
- * @author J�r�me Valenti
+ * @author Paul Berne
  * @version 2.0.0
  *
  */
@@ -33,33 +35,51 @@ public class Controller {
 	//specification
 	private ArrayList<Mesure> lesMesures;
 	private User leUser;
-	private DataFileMesure leStubMesure;
-	private DataFileUser leStubUser;
+	private DataFileMesure leDAObMesure;
+	private DataFileUser leDAOUser;
 	
 	private Login myLogin;
 	
+	private Configuration myConfiguration;
 	
-	public Controller() throws ParseException {
-	    
+	
+	
+
+
+
+	public Controller() throws ParseException, SQLException {
+		this.myConfiguration = new Configuration();
+		
 	    this.myLogin = new Login(this);
 	    this.myLogin.setLocation(100, 100);
 	    myLogin.setVisible(true);
 
-	    this.leStubMesure = new DataFileMesure();
-	    this.leStubMesure.lireMesureSQL("data\\mesures.csv");
+	    this.leDAObMesure = new DataFileMesure(this);
+	    this.leDAObMesure.lireMesureSQL();
 
-	    // Maintenant, lesMesures de votre Controller est la même que celle de leStubMesure
-	    this.lesMesures = leStubMesure.getLesMesures();
+	    this.lesMesures = leDAObMesure.getLesMesures();
+	    
+	    
 	}
 
+
+
 	public boolean verifyUserLogin(String login, String password) {
-	    DataFileUser dataFileUser = new DataFileUser();
+	    DataFileUser dataFileUser = new DataFileUser(this);
 	    try {
 	        return dataFileUser.lireUserSQL(login, password);
 	    } catch (ParseException e) {
 	        e.printStackTrace();
 	        return false;
 	    }
+	}
+	public void CreateFrameChangePassword(String thelogin) {
+		SwingUtilities.invokeLater(() -> {
+        ChangePassword monIHM = null;
+        monIHM = new ChangePassword(this, thelogin);
+        monIHM.setVisible(true);
+		});
+
 	}
 	public void CreateConsoleGUI() {
 		SwingUtilities.invokeLater(() -> {
@@ -72,7 +92,6 @@ public class Controller {
         monIHM.setVisible(true);
 		});
 	}
-
 
 	public ArrayList<Mesure> getLesMesures() {
 		return lesMesures;
@@ -95,17 +114,16 @@ public class Controller {
 
 
 	public DataFileMesure getLeStubMesure() {
-		return leStubMesure;
+		return leDAObMesure;
 	}
 
 
 	public DataFileUser getLeStubUser() {
-		return leStubUser;
+		return leDAOUser;
 	}
 	
+	public Configuration getMyConfiguration() {
+		return myConfiguration;
+	}
 
-
-
-
-	
 }

@@ -3,6 +3,7 @@ package view;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.border.EmptyBorder;
 
 import control.Controller;
@@ -47,14 +48,31 @@ public class Login extends JFrame {
         contentPane.add(txtLogin);
         txtLogin.setColumns(10);
 
-        txtPwd = new JTextField();
+        txtPwd = new JPasswordField();
         txtPwd.setColumns(10);
         txtPwd.setBounds(87, 36, 86, 20);
         contentPane.add(txtPwd);
 
         JButton btnLogin = new JButton("Login");
-        btnLogin.setBounds(87, 67, 89, 23);
+        btnLogin.setBounds(23, 82, 89, 23);
         contentPane.add(btnLogin);
+        
+        JButton btnChangePassword = new JButton("change password");
+        btnChangePassword.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String nomUtilisateur = txtLogin.getText();
+                String motDePasse = txtPwd.getText();
+
+                if (unController.verifyUserLogin(nomUtilisateur, motDePasse)) {
+                    myController.CreateFrameChangePassword(nomUtilisateur);
+                    dispose(); // Ferme la fenêtre de login
+                } else {
+                    JOptionPane.showMessageDialog(null, "Nom d'utilisateur ou mot de passe incorrect.");
+                }
+            }
+        });
+        btnChangePassword.setBounds(134, 82, 118, 23);
+        contentPane.add(btnChangePassword);
 
         btnLogin.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -62,8 +80,6 @@ public class Login extends JFrame {
                 String motDePasse = txtPwd.getText();
 
                 if (unController.verifyUserLogin(nomUtilisateur, motDePasse)) {
-                    JOptionPane.showMessageDialog(null, "Connexion réussie.");
-
                     myController.CreateConsoleGUI();
                     dispose(); // Ferme la fenêtre de login
                 } else {
@@ -73,5 +89,4 @@ public class Login extends JFrame {
         });
 
     }
-    
 }

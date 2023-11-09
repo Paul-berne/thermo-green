@@ -15,23 +15,30 @@ public class DataFileUser {
 	// specification
 	private Controller myController;
 	
+	private Connection connection;
+	private Statement statement;
+	private ResultSet resultSet;
+	
 	//Implementation
-	public DataFileUser() {
-		
-	}
+	public DataFileUser(Controller theController) {
+		try {
+			this.myController = theController;
+			String dbname = this.myController.getMyConfiguration().readProperty("database.url");
+			String username = this.myController.getMyConfiguration().readProperty("database.username");
+			String password = this.myController.getMyConfiguration().readProperty("database.password");
+
+            this.connection = DriverManager.getConnection(dbname, username, password);
+
+            this.statement = connection.createStatement();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 	
 	public boolean lireUserSQL(String theLogin, String thePassword) throws ParseException {
 		boolean verif = false;
-	    Connection connection = null;
-	    Statement statement = null;
-	    ResultSet resultSet = null;
 
 	    try {
-	        // Établir une connexion à la base de données (assurez-vous d'avoir les détails de connexion appropriés)
-	        connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/thermogreen", "root", "Paulberne13?");
-
-	        // Créer une instruction SQL pour exécuter la requête SELECT
-	        statement = connection.createStatement();
 	        String sqlQuery = "SELECT login, password FROM user";
 	        resultSet = statement.executeQuery(sqlQuery);
 
@@ -40,7 +47,7 @@ public class DataFileUser {
 	            String password = resultSet.getString("password");
 	            if (login.equals(theLogin) && BCrypt.checkpw(thePassword,password)) {
 	                verif = true;
-	                break; // Sortir de la boucle dès que la correspondance est trouvée
+	                break;
 	            }
 	        }
 	    } catch (SQLException e) {
@@ -62,6 +69,19 @@ public class DataFileUser {
 	    }
 
 	    return verif;
+	}
+	
+	public void ChangePasswordUser(String theLogin, String thePassword) {
+	    String passwordToHash = thePassword;
+	    String salt = BCrypt.gensalt();
+	    String hashedPassword = BCrypt.hashpw(passwordToHash, salt);
+
+	    String sqlQuery = "UPDATE user SET password = '" + hashedPassword + "' WHERE login = '" + theLogin + "'";
+	    try {
+	        statement.executeUpdate(sqlQuery);
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
 	}
 
 	

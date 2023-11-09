@@ -362,8 +362,6 @@ public class ConsoleGUI extends JFrame {
 
 		if (rdbtnCelsius.isSelected()) {
 
-			System.out.println("Celsius : " + rdbtnCelsius.isSelected() + " | " + mesures.size());
-
 			// Initialisation de min et max
 			min = mesures.get(0).getCelsius();
 			max = mesures.get(0).getCelsius();
@@ -386,8 +384,6 @@ public class ConsoleGUI extends JFrame {
 				}
 			}
 		} else {
-
-			System.out.println("Celsius : " + rdbtnCelsius.isSelected() + " | " + mesures.size());
 
 			// Initialisation de min et max
 			min = mesures.get(0).getFahrenheit();
@@ -505,7 +501,6 @@ public class ConsoleGUI extends JFrame {
         chartPanel.setBounds(5, 20, 320, 190);
         chartPanel.setVisible(true);
         pnlGraph.add(chartPanel);
-		System.out.println("chartPanel added to pnlGraph");
 	}
 	/**
 	 * <p>Classe interne qui g�re le clique sur le bouton filtrer
@@ -515,10 +510,7 @@ public class ConsoleGUI extends JFrame {
         public void actionPerformed(ActionEvent e){
 
         	lesMesures = myController.getLeStubMesure().filtrerLesMesure(choixZone.getSelectedItem().toString());
-        	System.out.println("Filtrer Celsius : " + rdbtnCelsius.isSelected() + 
-        				" Fahrenheit : " + rdbtnFahrenheit.isSelected() + 
-        				" choix : " + choixZone.getSelectedItem() + 
-        				" d�but : " + dateDebut.getText() );
+   
         	displayLesMesures(lesMesures);
         	
         	//Construit le tableau d'objet
@@ -527,10 +519,8 @@ public class ConsoleGUI extends JFrame {
     		//Definit le JScrollPane qui va recevoir la JTable
     		scrollPane.setViewportView(laTable);
     		
-    		System.out.println("Before setChart in filtrerData()");
     		//affiche le graphique
     		setChart();
-    		System.out.println("After setChart in filtrerData()");
         }
 	}
 	

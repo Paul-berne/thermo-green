@@ -1,10 +1,5 @@
 package DAO;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -13,14 +8,12 @@ import java.util.Date;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
+import control.Controller;
 import model.Mesure;
 
 public class DataFileMesure {
@@ -33,8 +26,30 @@ public class DataFileMesure {
 	 * </p>
 	 */
 	private ArrayList<Mesure> lesMesures = new ArrayList<Mesure>();
+	
+	private Connection connection;
+	private Statement statement;
+	private ResultSet resultSet;
+	
+	private Controller myController;
 
 	//implementation
+	
+	public DataFileMesure(Controller theController) throws SQLException {
+		try {
+			this.myController = theController;
+			String dbname = this.myController.getMyConfiguration().readProperty("database.url");
+			String username = this.myController.getMyConfiguration().readProperty("database.username");
+			String password = this.myController.getMyConfiguration().readProperty("database.password");
+
+			
+            this.connection = DriverManager.getConnection(dbname, username, password);
+
+            this.statement = connection.createStatement();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 	
 	/**
 	 * <p>Convertion d'une String en Date</p>
@@ -104,18 +119,9 @@ public class DataFileMesure {
 	 * @since 2.0.0
 	 */
 	
-public void lireMesureSQL(String filePath) throws ParseException {
-		
-		Connection connection = null;
-	    Statement statement = null;
-	    ResultSet resultSet = null;
+public void lireMesureSQL() throws ParseException {
 
 		try {
-	        // Établir une connexion à la base de données (assurez-vous d'avoir les détails de connexion appropriés)
-	        connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/thermogreen", "root", "Paulberne13?");
-
-	        // Créer une instruction SQL pour exécuter la requête SELECT
-	        statement = connection.createStatement();
 	        String sqlQuery = "SELECT numero, date_mesure, fahrenheit FROM mesure";
 	        resultSet = statement.executeQuery(sqlQuery);
 

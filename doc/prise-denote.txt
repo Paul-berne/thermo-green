@@ -1,7 +1,0 @@
-thermo green 2
-1 - ajuster le cas d'utilisateur s'identifie
-2 - dans model créer une classe utilisateur 
-2.1 persistance des données (stock dans une bdd, mais pour l'instant on le stock dans un fichier csv)
-2.2 frame ou l'utilsateur doit se logger avec vérification avec le fichier TXT et ce que l'utilisateur a entré
-3 - hashage du password avec JBcrypt
-4 - persistance dans une BDD, JDBC connection avec Java
