@@ -1,5 +1,5 @@
 /**
- * @author J�r�me Valenti
+ * @author Paul Berne
  */
 package view;
 import java.awt.Color;
@@ -40,7 +40,7 @@ import model.Mesure;
 /**
  * <p>ConsoleGUI : IHM de l'application de consultation des temp�ratures</p>
  * <p>Projet Vinci Thermo Green</p>
- * @author J�r�me Valenti
+ * @author Paul Berne
  * @version 2.0.0
  * @see control.Controller
  * @see model.Mesure
@@ -145,7 +145,7 @@ public class ConsoleGUI extends JFrame {
 		super();
 		this.myController = unController;
 		
-		setIconImage(Toolkit.getDefaultToolkit().getImage("img\\vinci_ico.jpg"));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(ConsoleGUI.class.getClassLoader().getResource("img/vinci_ico.jpg")));
 		setTitle("Vinci Thermo Green");
 		setSize(712, 510);
 		setResizable(false);
@@ -223,7 +223,7 @@ public class ConsoleGUI extends JFrame {
 		btnFiltrer.addActionListener(new filtrerData());
 		
 		JLabel lblLogoVinci = new JLabel();
-		lblLogoVinci.setIcon(new ImageIcon("img\\s_vinci.png"));
+		lblLogoVinci.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(ConsoleGUI.class.getClassLoader().getResource("img\\s_vinci.png"))));
 		lblLogoVinci.setBounds(221, 11, 95, 35);
 		pnlCriteria.add(lblLogoVinci);
 
@@ -326,7 +326,7 @@ public class ConsoleGUI extends JFrame {
 		pnlBounds.add(lblDebordMaximum);
 		
 		JLabel lbAlerte = new JLabel();
-		lbAlerte.setIcon(new ImageIcon("img\\s_green_button.png"));
+		lbAlerte.setIcon(new ImageIcon(Toolkit.getDefaultToolkit().getImage(ConsoleGUI.class.getClassLoader().getResource("img\\s_green_button.png"))));
 		lbAlerte.setBounds(270, 42, 75, 75);
 		pnlBounds.add(lbAlerte);
 

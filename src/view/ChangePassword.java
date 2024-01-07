@@ -6,7 +6,6 @@ import DAO.DataFileUser;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,6 +13,13 @@ import java.util.Arrays;
 
 import control.Controller;
 
+/**
+ * The ChangePassword class provides a GUI for changing user passwords.
+ * It includes password validation using Passay library.
+ * 
+ * @author Paul Berne
+ * @version 1.0
+ */
 public class ChangePassword extends JFrame {
 
     private Controller myController;
@@ -23,6 +29,12 @@ public class ChangePassword extends JFrame {
     private JLabel lblPasswordCheck;
     private DataFileUser leDAOUser;
 
+    /**
+     * Constructs a ChangePassword instance.
+     * 
+     * @param unController The Controller instance for handling interactions.
+     * @param login The user login for which the password is to be changed.
+     */
     public ChangePassword(Controller unController, String login) {
         this.myController = unController;
         this.leDAOUser = new DataFileUser(myController);
@@ -59,12 +71,18 @@ public class ChangePassword extends JFrame {
 
         JButton btnChangePassword = new JButton("Change password");
         btnChangePassword.addActionListener(new ActionListener() {
+            /**
+             * Invoked when the "Change password" button is clicked.
+             * Performs password validation and changes the user password if valid.
+             * 
+             * @param e The ActionEvent triggered by the button click.
+             */
             public void actionPerformed(ActionEvent e) {
                 char[] motDePasse = txtPwd.getPassword();
                 String lemotDePasse = new String(motDePasse);
                 
                 char[] confirmationMotDePasse = txtConfirmPwd.getPassword();                
-                // Vérification des règles de mot de passe avec Passay
+                // Validation of password rules using Passay library
                 PasswordValidator validator = new PasswordValidator(
                     new LengthRule(8, 30),
                     new CharacterRule(EnglishCharacterData.UpperCase, 1),

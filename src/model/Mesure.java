@@ -1,80 +1,115 @@
 /**
- * @author Jérôme Valenti
+ * The Mesure class represents temperature measurements of the lawn.
+ * Each sensor regularly measures the temperature, providing data in Fahrenheit,
+ * localized by zones, and timestamped with date and time.
+ * 
+ * @author Paul Berne
+ * @version 2.0.0
  */
 package model;
 
 import java.util.Date;
-/**
- * <p>Des capteurs mesure régulièrement la température de la pelouse.</p>
- * <p>Pour chaque capteur :</p>
- * <ul>
- * <li>les mesures sont donn&eacute;es en degr&eacute; Fahrenheit;<br /></li>
- * <li>localis&eacute;es par le d&eacute;coupage du terrain en zones;<br /></li>
- * <li>horadat&eacute;ee par la date et l'heure.<br /></li>
- * </ul> 
- * 
- * @author jvalenti
- * @version 2.0.0
- *
- */
+
 public class Mesure {
-	/**
-	 * <p>numZone contient le numéro de la zone mesurée</p>
-	 */
-	private String numZone;
-	/**
-	 * <p>horoDate contient la date et l'heure de la mesure au format aa-mm-jj hh:mm</p>
-	 */
-	private Date horoDate;  
-	/**
-	 * <p>valFahrenheit contient la valeur de la température mesurée en degré Fahrenheit</p>
-	 */
-	private float fahrenheit; 
+    
+    /**
+     * The zone number of the measured area.
+     */
+    private String numZone;
+    
+    /**
+     * The date and time of the measurement in the format yy-mm-dd hh:mm.
+     */
+    private Date horoDate;  
+    
+    /**
+     * The temperature value measured in Fahrenheit.
+     */
+    private float fahrenheit; 
 
-	public Mesure() {
-		this.numZone = new String();
-		this.horoDate = new Date();
-		this.fahrenheit = 0.0f;	
-	}
-	
-	public Mesure(String pZone, Date pDate, float pFahrenheit) {
+    /**
+     * Default constructor for the Mesure class.
+     */
+    public Mesure() {
+        this.numZone = new String();
+        this.horoDate = new Date();
+        this.fahrenheit = 0.0f;    
+    }
+    
+    /**
+     * Parameterized constructor for the Mesure class.
+     * 
+     * @param pZone The zone number of the measured area.
+     * @param pDate The date and time of the measurement.
+     * @param pFahrenheit The temperature value measured in Fahrenheit.
+     */
+    public Mesure(String pZone, Date pDate, float pFahrenheit) {
+        this.numZone = pZone;
+        this.horoDate = pDate;
+        this.fahrenheit = pFahrenheit;
+    }
 
-		this.numZone = pZone;
-		this.horoDate = pDate;
-		this.fahrenheit = pFahrenheit;
-	}
+    /**
+     * Getter for the zone number.
+     * 
+     * @return String The zone number.
+     */
+    public String getNumZone() {
+        return numZone;
+    }
 
-	public String getNumZone() {
-		return numZone;
-	}
+    /**
+     * Setter for the zone number.
+     * 
+     * @param numZone The zone number to set.
+     */
+    public void setNumZone(String numZone) {
+        this.numZone = numZone;
+    }
 
-	public void setNumZone(String numZone) {
-		this.numZone = numZone;
-	}
+    /**
+     * Getter for the date and time of the measurement.
+     * 
+     * @return Date The date and time of the measurement.
+     */
+    public Date getHoroDate() {
+        return horoDate;
+    }
 
-	public Date getHoroDate() {
-		return horoDate;
-	}
+    /**
+     * Setter for the date and time of the measurement.
+     * 
+     * @param horoDate The date and time to set.
+     */
+    public void setHoroDate(Date horoDate) {
+        this.horoDate = horoDate;
+    }
 
-	public void setHoroDate(Date horoDate) {
-		this.horoDate = horoDate;
-	}
+    /**
+     * Getter for the temperature value in Fahrenheit.
+     * 
+     * @return float The temperature value in Fahrenheit.
+     */
+    public float getFahrenheit() {
+        return fahrenheit;
+    }
 
-	public float getFahrenheit() {
-		return fahrenheit;
-	}
+    /**
+     * Setter for the temperature value in Fahrenheit.
+     * 
+     * @param valFahrenheit The temperature value in Fahrenheit to set.
+     */
+    public void setFahrenheit(float valFahrenheit) {
+        this.fahrenheit = valFahrenheit;
+    }
 
-	public void setFahrenheit(float valFahrenheit) {
-		this.fahrenheit = valFahrenheit;
-	}
-
-	/**
-	 * <p>Convertit Fahrenheit en °Celsius</p> 
-	 * @since 2.0.0
-	 * @return float t°Celsius
-	 */
-	public float getCelsius() {
-		//return (float) (valFahrenheit - 32) / 1.8)
-		return (fahrenheit - 32.0f) / 1.8f;
-	}
+    /**
+     * Converts Fahrenheit to Celsius.
+     * 
+     * @since 2.0.0
+     * @return float The temperature value in Celsius.
+     */
+    public float getCelsius() {
+        return (fahrenheit - 32.0f) / 1.8f;
+    }
 }

@@ -1,10 +1,22 @@
+/**
+ * The DataFileMesure class handles the data access for temperature measurements.
+ * It connects to a database, reads data, and provides methods to filter and retrieve measurements.
+ * 
+ * - Connects to the database using configuration properties.
+ * - Converts a Timestamp to Date format.
+ * - Filters the collection of measurements based on parameters (zone).
+ * - Reads temperature measurements from an SQL database.
+ * - Provides methods to retrieve the collection of measurements.
+ * 
+ * @author Paul Berne
+ * @since 2.0.0
+ */
 package DAO;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -18,12 +30,10 @@ import model.Mesure;
 
 public class DataFileMesure {
 	
-	//specification
+	// Specification
 	
 	/**
-	 * <p>
-	 * Les mesures lues dans le fichier des relev�s de temp�ratures
-	 * </p>
+	 * The temperature measurements read from the temperature records file.
 	 */
 	private ArrayList<Mesure> lesMesures = new ArrayList<Mesure>();
 	
@@ -33,8 +43,15 @@ public class DataFileMesure {
 	
 	private Controller myController;
 
-	//implementation
+	// Implementation
 	
+	/**
+	 * Constructor for the DataFileMesure class.
+	 * Connects to the database using configuration properties.
+	 * 
+	 * @param theController The main controller for the application.
+	 * @throws SQLException Thrown if there is an SQL-related error.
+	 */
 	public DataFileMesure(Controller theController) throws SQLException {
 		try {
 			this.myController = theController;
@@ -42,9 +59,7 @@ public class DataFileMesure {
 			String username = this.myController.getMyConfiguration().readProperty("database.username");
 			String password = this.myController.getMyConfiguration().readProperty("database.password");
 
-			
             this.connection = DriverManager.getConnection(dbname, username, password);
-
             this.statement = connection.createStatement();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -52,11 +67,11 @@ public class DataFileMesure {
     }
 	
 	/**
-	 * <p>Convertion d'une String en Date</p>
+	 * Converts a Timestamp to a Date format.
 	 * 
-	 * @param timestamp
-	 * @return Date
-	 * @throws ParseException
+	 * @param timestamp The Timestamp to convert.
+	 * @return Date The converted Date.
+	 * @throws ParseException Thrown if there is an error parsing the timestamp.
 	 */
 	private Date strToDate(Timestamp timestamp) throws ParseException {
 	    SimpleDateFormat leFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S", Locale.ENGLISH);
@@ -64,25 +79,13 @@ public class DataFileMesure {
 	    return laDate;
 	}
 
-
-
-	
 	/**
-	 * <p>
-	 * Filtre la collection des mesures en fonction des param&egrave;tres :
-	 * </p>
-	 * <ol>
-	 * <li>la zone (null = toutes les zones)</li>
-	 * <li>la date de d&eacute;but (null = &agrave; partir de l'origine)</li>
-	 * <li>la date de fin (null = jusqu'&agrave; la fin)<br />
-	 * </li>
-	 * </ol>
+	 * Filters the collection of measurements based on the specified zone.
+	 * 
+	 * @param laZone The zone to filter by (null = all zones).
+	 * @return ArrayList<Mesure> The filtered collection of measurements.
 	 */
-	// public void filtrerLesMesure(String laZone, Date leDebut, Date lafin) {
 	public ArrayList<Mesure> filtrerLesMesure(String laZone) {
-		// Parcours de la collection
-		// Ajout � laSelection des objets qui correspondent aux param�tres
-		// Envoi de la collection
 		ArrayList<Mesure> laSelection = new ArrayList<Mesure>();
 		for (Mesure mesure : lesMesures) {
 			if (laZone.compareTo("*") == 0) {
@@ -97,34 +100,14 @@ public class DataFileMesure {
 	}
 
 	/**
-	 * <p>
-	 * Retourne la collection des mesures
-	 * </p>
+	 * Reads temperature measurements from an SQL database.
 	 * 
-	 * @return ArrayList<Mesure>
+	 * @throws ParseException Thrown if there is an error parsing data.
 	 */
-	public ArrayList<Mesure> getLesMesures() {
-
-		return lesMesures;
-	}
-	
-	
-	/**
-	 * <p>Lit un fichier de type CSV (Comma Separated Values)</p>
-	 * <p>Le fichier contient les mesures de temp&eacute;rature de la pelouse.</p>
-	 * 
-	 * @author J�r�me Valenti
-	 * @return
-	 * @throws ParseException
-	 * @since 2.0.0
-	 */
-	
-public void lireMesureSQL() throws ParseException {
-
+	public void lireMesureSQL() throws ParseException {
 		try {
 	        String sqlQuery = "SELECT numero, date_mesure, fahrenheit FROM mesure";
 	        resultSet = statement.executeQuery(sqlQuery);
-
 
 	        while (resultSet.next()) {
 	            String numZone = resultSet.getString("numero");
@@ -151,11 +134,14 @@ public void lireMesureSQL() throws ParseException {
 	            e.printStackTrace();
 	        }
 	    }
+	}
 
+	/**
+	 * Returns the collection of temperature measurements.
+	 * 
+	 * @return ArrayList<Mesure> The collection of temperature measurements.
+	 */
+	public ArrayList<Mesure> getLesMesures() {
+		return lesMesures;
+	}
 }
-
-}
-
-
-
-
